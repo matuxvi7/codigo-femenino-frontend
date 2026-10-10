@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState, type ReactNode } from "react";
 import { listCategories, subscribeNewsletter } from "@/lib/api";
-import { categoryImage, formatDate, toCategory, type Article } from "@/lib/articles";
+import { articleImage, formatDate, toCategory, type Article } from "@/lib/articles";
 
 export function Layout({ children }: { children: ReactNode }) {
   const { data: categories = [] } = useQuery({
@@ -83,7 +83,7 @@ export function ArticleCard({ a, large }: { a: Article; large?: boolean }) {
     <Link to="/articulo/$slug" params={{ slug: a.slug }} className="group block">
       <div className={`overflow-hidden rounded-sm ${large ? "aspect-[16/10]" : "aspect-[4/3]"}`}>
         <img
-          src={categoryImage(a.category)}
+          src={articleImage(a)}
           alt={a.title}
           width={1200}
           height={800}

@@ -21,6 +21,7 @@ export type ApiArticleSummary = {
   author: string;
   read_time_minutes: number;
   status: "draft" | "published" | "archived";
+  image_url: string | null;
   published_at: string | null;
   created_at: string;
   updated_at: string;

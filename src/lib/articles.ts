@@ -17,6 +17,11 @@ export function categoryImage(slug: string): string {
   return categoryImages[slug] ?? imgAutoestima;
 }
 
+// Imagen del artículo: la subida a Cloudinary si existe, si no la de su categoría.
+export function articleImage(a: { imageUrl: string | null; category: string }): string {
+  return a.imageUrl ?? categoryImage(a.category);
+}
+
 export type Category = { slug: string; name: string; description: string };
 
 export type Article = {
@@ -28,6 +33,7 @@ export type Article = {
   author: string;
   date: string;
   readTime: number;
+  imageUrl: string | null;
   body: { h: string | undefined; p: string }[];
 };
 
@@ -45,6 +51,7 @@ export function toArticle(a: ApiArticleSummary): Article {
     author: a.author,
     date: a.published_at ?? a.created_at,
     readTime: a.read_time_minutes,
+    imageUrl: a.image_url ?? null,
     body: [],
   };
 }

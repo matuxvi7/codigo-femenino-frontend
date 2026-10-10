@@ -2,7 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { Layout, ArticleCard } from "@/components/Layout";
 import { ApiError, getArticle, listArticles } from "@/lib/api";
-import { categoryImage, formatDate, toArticle, toArticleDetail } from "@/lib/articles";
+import { articleImage, formatDate, toArticle, toArticleDetail } from "@/lib/articles";
 
 const articleQuery = (slug: string) =>
   queryOptions({
@@ -73,7 +73,7 @@ function ArticlePage() {
         <p className="mt-4 text-lg text-muted-foreground">{a.excerpt}</p>
         <p className="mt-4 text-xs text-muted-foreground">Por {a.author} · {formatDate(a.date)} · {a.readTime} min de lectura</p>
         <img
-          src={categoryImage(a.category)}
+          src={articleImage(a)}
           alt={a.title}
           width={1200}
           height={800}
