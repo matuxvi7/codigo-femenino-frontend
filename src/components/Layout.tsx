@@ -2,7 +2,13 @@ import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState, type ReactNode } from "react";
 import { listCategories, subscribeNewsletter } from "@/lib/api";
-import { articleImage, formatDate, toCategory, type Article } from "@/lib/articles";
+import {
+  articleImage,
+  articleImageSrcSet,
+  formatDate,
+  toCategory,
+  type Article,
+} from "@/lib/articles";
 
 export function Layout({ children }: { children: ReactNode }) {
   const { data: categories = [] } = useQuery({
@@ -84,10 +90,20 @@ export function ArticleCard({ a, large }: { a: Article; large?: boolean }) {
       <div className={`overflow-hidden rounded-sm ${large ? "aspect-[16/10]" : "aspect-[4/3]"}`}>
         <img
           src={articleImage(a)}
+          srcSet={articleImageSrcSet(
+            a,
+            large ? [480, 768, 1200] : [360, 480, 768],
+          )}
+          sizes={
+            large
+              ? "(min-width: 1152px) 1120px, calc(100vw - 32px)"
+              : "(min-width: 1152px) 347px, (min-width: 1024px) 30vw, (min-width: 640px) calc((100vw - 72px) / 2), calc(100vw - 32px)"
+          }
           alt={a.title}
           width={1200}
           height={800}
           loading={large ? "eager" : "lazy"}
+          fetchPriority={large ? "high" : undefined}
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
       </div>

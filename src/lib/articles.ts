@@ -19,7 +19,30 @@ export function categoryImage(slug: string): string {
 
 // Imagen del artículo: la subida a Cloudinary si existe, si no la de su categoría.
 export function articleImage(a: { imageUrl: string | null; category: string }): string {
-  return a.imageUrl ?? categoryImage(a.category);
+  return a.imageUrl ? cloudinaryImageUrl(a.imageUrl, 1200) : categoryImage(a.category);
+}
+
+export function articleImageSrcSet(
+  a: { imageUrl: string | null; category: string },
+  widths: readonly number[],
+): string | undefined {
+  const imageUrl = a.imageUrl;
+  if (
+    !imageUrl?.startsWith("https://res.cloudinary.com/") ||
+    !imageUrl.includes("/image/upload/")
+  ) {
+    return undefined;
+  }
+
+  return widths.map((width) => `${cloudinaryImageUrl(imageUrl, width)} ${width}w`).join(", ");
+}
+
+function cloudinaryImageUrl(url: string, width: number): string {
+  if (!url.startsWith("https://res.cloudinary.com/") || !url.includes("/image/upload/")) {
+    return url;
+  }
+
+  return url.replace("/image/upload/", `/image/upload/f_auto,q_auto,w_${width},c_limit/`);
 }
 
 export type Category = { slug: string; name: string; description: string };
@@ -70,5 +93,6 @@ export function formatDate(iso: string): string {
     day: "numeric",
     month: "long",
     year: "numeric",
+    timeZone: "UTC",
   });
 }
